@@ -60,19 +60,17 @@ public class RobotContainer {
 
     DriverStation ds = DriverStation.getInstance();
 
-    //Automatically searches for the joysticks by name, if the names can not be found it defaults association to the next open ports.
+    //Automatically searches for the joysticks by name, if the names can not be found it notifies the user
     ArrayList<String> foundJoysticksName = new ArrayList<String>();
     for(int port = 0; port <= 5; port++) {
       String jName = ds.getJoystickName(port);
       System.out.println("Registered DS Joystick: " + jName);
 
       if(jName.equals(Constants.driveJoystickName)) { //Found Driver Joystick.
-        m_driveJoystick = new Joystick(port);
         foundJoysticksName.add(jName);
         System.out.println("Found Drive Joystick: " + jName + " on port " + port);
       }
       if(jName.equals(Constants.auxJoystickName)) { //Found Aux Joystick.
-        m_auxJoystick = new Joystick(port);
         foundJoysticksName.add(jName);
         System.out.println("Found Aux Joystick: " + jName + " on port " + port);
       }
