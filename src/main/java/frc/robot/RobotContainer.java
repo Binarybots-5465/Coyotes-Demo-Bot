@@ -4,11 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation;
+
+import java.util.ArrayList;
+
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,19 +31,60 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  //Subsystems
+  private final Drive m_driveSubsystem = new Drive();
+
+  //HID
+  public Joystick m_driveJoystick = new Joystick(Constants.defaultDriveJoystickPort); //Defaults to ports set in Constants if configureJoysticks() can't find it later.
+  public Joystick m_auxJoystick = new Joystick(Constants.defaultAuxJoystickPort);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+
+    //Configure the Joysticks and button bindings.
+    configureJoysticks();
+
+    /* Set default commands for subsystems */
+
+    //Arcade-type system for driving. Left joystick for FB. Right joystick for turning.
+    m_driveSubsystem.setDefaultCommand(
+        new RunCommand(() -> m_driveSubsystem
+            .setRaw(m_driveJoystick.getY(GenericHID.Hand.kLeft),
+                    m_driveJoystick.getRawAxis( Constants.driveJoystickRotationAxisNum )), m_driveSubsystem));
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Automatically finds the needed joysticks and maps buttons.
    */
-  private void configureButtonBindings() {}
+  private void configureJoysticks() {
+
+    DriverStation ds = DriverStation.getInstance();
+
+    //Automatically searches for the joysticks by name, if the names can not be found it defaults association to the next open ports.
+    ArrayList<String> foundJoysticksName = new ArrayList<String>();
+    for(int port = 0; port <= 5; port++) {
+      String jName = ds.getJoystickName(port);
+      System.out.println("Registered DS Joystick: " + jName);
+
+      if(jName.equals(Constants.driveJoystickName)) { //Found Driver Joystick.
+        m_driveJoystick = new Joystick(port);
+        foundJoysticksName.add(jName);
+        System.out.println("Found Drive Joystick: " + jName + " on port " + port);
+      }
+      if(jName.equals(Constants.auxJoystickName)) { //Found Aux Joystick.
+        m_auxJoystick = new Joystick(port);
+        foundJoysticksName.add(jName);
+        System.out.println("Found Aux Joystick: " + jName + " on port " + port);
+      }
+    }
+    if(foundJoysticksName.size() < 2) {
+      System.out.print("Only found " + foundJoysticksName.size() + " joystick(s):");
+      for(String arrString : foundJoysticksName) { System.out.print(" " + arrString);}
+
+      System.out.println("\n Make sure you can see both (" + Constants.driveJoystickName + ") and (" + Constants.auxJoystickName + ") in the driverstation!");
+      System.out.println("Assigned the Drive joystick to PORT 0 & Aux joystick to PORT 1.");
+    }
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

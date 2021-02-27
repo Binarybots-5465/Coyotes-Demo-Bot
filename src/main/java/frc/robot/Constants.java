@@ -21,6 +21,10 @@ public final class Constants {
     public static String driveJoystickName = "Wireless Controller";
     public static String auxJoystickName = "Controller (HORIPAD S)";
 
+    //Default Joystick ports
+    public static int defaultDriveJoystickPort = 0;
+    public static int defaultAuxJoystickPort = 1;
+
     //Joystick Axis Values
     public static int driveJoystickRotationAxisNum = 2; //The Joystick class doesn't correctly read the right hand side's input (the driverstation reports it under a different axis)
                                                         // reading the value from the axis number will correct this.
