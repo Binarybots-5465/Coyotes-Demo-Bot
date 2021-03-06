@@ -80,7 +80,7 @@ public class RobotContainer {
       for(String arrString : foundJoysticksName) { System.out.print(" " + arrString);}
 
       System.out.println("\n Make sure you can see both (" + Constants.driveJoystickName + ") and (" + Constants.auxJoystickName + ") in the driverstation!");
-      System.out.println("Assigned the Drive joystick to PORT 0 & Aux joystick to PORT 1.");
+      System.out.println("Assigned the Drive joystick to PORT " + Constants.defaultDriveJoystickPort +" & Aux joystick to PORT " + Constants.defaultAuxJoystickPort +".");
     }
   }
 
