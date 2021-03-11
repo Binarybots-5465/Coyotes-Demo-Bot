@@ -104,7 +104,7 @@ public class Drive extends SubsystemBase {
         rightForwardTalon.configMotionAcceleration(Constants.initialCruiseAcceleration, Constants.talonEncoderTimeout);
         rightForwardTalon.configMotionCruiseVelocity(Constants.initialCruiseVelocity, Constants.talonEncoderTimeout);
     
-        //Max out the motor's peak output (for all control modes)
+        //Max out the motor's peak output (in percent, for all control modes)
         leftForwardTalon.configPeakOutputForward(+1.0, Constants.talonEncoderTimeout);
         leftForwardTalon.configPeakOutputReverse(-1.0, Constants.talonEncoderTimeout);
         rightForwardTalon.configPeakOutputForward(+1.0, Constants.talonEncoderTimeout);
@@ -145,7 +145,8 @@ public class Drive extends SubsystemBase {
      */
     public void setRaw(double forw, double rot) {
 
-        diffDrive.arcadeDrive(forw, -1 * rot, true); //Negate the z rotation value (r) because the joystick's axis rotates CCW.
+        diffDrive.arcadeDrive(forw, -1 * rot, true); //Arcade drive expects a clockwise value to determine the different power to give to each side of the robot
+                                                     // but our joystick gives us values in CCW so we negate the z rotation value (rot) to give us our expected rotation value
     }
 
     /**
