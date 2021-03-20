@@ -18,7 +18,7 @@ public final class Constants {
     /* HID Constants */
     
     //Set's the name for configureJoysticks() in RobotContainer.java to search for.
-    public static String driveJoystickName = "Wireless Controller";
+    public static String driveJoystickName = "Logitech Dual Action";
     public static String auxJoystickName = "Controller (HORIPAD S)";
 
     //Default Joystick ports

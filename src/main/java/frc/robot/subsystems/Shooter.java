@@ -17,7 +17,9 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonSRX leftSideMotor = new WPI_TalonSRX(Constants.shooterLeftMotorTalonID);
   private VictorSP rightSideMotor = new VictorSP(Constants.shooterRightMotorPWMID);
 
-  public Shooter() {}
+  public Shooter() {
+    rightSideMotor.setInverted(true); //The right side goes the opposite to correct
+  }
 
   /**
    * Sets the speed of the shooter mechanism and displays it on the WPILIB Smart Dashboard
