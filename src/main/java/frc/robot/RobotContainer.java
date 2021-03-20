@@ -33,6 +33,7 @@ public class RobotContainer {
 
   //Subsystems
   private final Drive m_driveSubsystem = new Drive();
+  private final Shooter m_shooterSubsystem = new Shooter();
 
   //HID
   public Joystick m_driveJoystick = new Joystick(Constants.defaultDriveJoystickPort); //Defaults to ports set in Constants if configureJoysticks() can't find it later.
@@ -51,6 +52,14 @@ public class RobotContainer {
         new RunCommand(() -> m_driveSubsystem
             .setRaw(m_driveJoystick.getY(GenericHID.Hand.kLeft),
                     m_driveJoystick.getRawAxis( Constants.driveJoystickRotationAxisNum )), m_driveSubsystem));
+    
+    m_shooterSubsystem.setDefaultCommand(
+      new RunCommand(() -> m_shooterSubsystem
+        .setPercentAndUpdateSmartDashBoard(
+          m_driveJoystick.getRawButton(Constants.shooterManualRunShooterButton) ? 1.0 : 0
+        ),
+        m_shooterSubsystem) );
+    
   }
 
   /**

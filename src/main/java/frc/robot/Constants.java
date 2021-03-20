@@ -86,5 +86,12 @@ public final class Constants {
     //Sets constant for the length of time the PID period runs.
     public final static int PIDClosedLoopTimeMs = 1; //1 ms per loop cycle.
 
+    /* Shooter Constants */
+
+    //Motor ID's
+    public final static int shooterLeftMotorTalonID = 6; //If we're using a Talon this will be the CAN ID for the left side.
+    public final static int shooterRightMotorPWMID = 0; //The right side is using a VictorSP on PWM channel 0
     
+    //Button ID
+    public final static int shooterManualRunShooterButton = 3; //This would be the Triangle button on the PS4 controller
 }
