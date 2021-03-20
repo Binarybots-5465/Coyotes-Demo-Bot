@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -16,9 +18,13 @@ public class Shooter extends SubsystemBase {
   
   private WPI_TalonSRX leftSideMotor = new WPI_TalonSRX(Constants.shooterLeftMotorTalonID);
   private VictorSP rightSideMotor = new VictorSP(Constants.shooterRightMotorPWMID);
+  private Compressor pneumaticsCompressor = new Compressor(Constants.PCMCANID);
+  private DoubleSolenoid triggerSolenoid = new DoubleSolenoid(Constants.shooterPCMTriggerFowardPortID, Constants.shooterPCMTriggerReversePortID);
 
   public Shooter() {
     rightSideMotor.setInverted(true); //The right side goes the opposite to correct
+    pneumaticsCompressor.start();
+    triggerSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   /**
@@ -29,6 +35,15 @@ public class Shooter extends SubsystemBase {
     leftSideMotor.set(percentSpeed);
     rightSideMotor.set(percentSpeed);
     SmartDashboard.putNumber("Shooter Percent", percentSpeed);
+  }
+
+  public void toggleShooterTrigger() {
+    DoubleSolenoid.Value currentPosition = triggerSolenoid.get();
+    System.out.println(currentPosition);
+    if(currentPosition == DoubleSolenoid.Value.kReverse)
+      triggerSolenoid.set(DoubleSolenoid.Value.kForward);
+    else
+      triggerSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   @Override

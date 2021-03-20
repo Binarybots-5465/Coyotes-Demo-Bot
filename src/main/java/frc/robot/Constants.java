@@ -31,9 +31,9 @@ public final class Constants {
     public static double driveJoystickTurnCoefficient = 0.25;
 
     //Joystick Button Values
-    public static int auxAButton = 1; //Represents the A button on the Horipad Gamecube controller.
-    public static int auxXButton = 3; //Represents the X button on the Horipad Gamecube controller.
-    public static int auxBButton = 2; //Represents the B button on the Horipad Gamecube controller.
+    public static int driveXButton = 1; //Represents the X button on the drive controller.
+    public static int driveBButton = 3;
+    public static int driveAButton = 2;
 
     /* Drive Constants */
 
@@ -94,4 +94,11 @@ public final class Constants {
     
     //Button ID
     public final static int shooterManualRunShooterButton = 3; //This would be the Triangle button on the PS4 controller
+
+    //PCM ID
+    public final static int PCMCANID = 0;
+
+    //Shooter trigger mechanism
+    public final static int shooterPCMTriggerFowardPortID = 4;
+    public final static int shooterPCMTriggerReversePortID = 5;
 }

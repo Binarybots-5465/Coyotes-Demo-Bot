@@ -7,8 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -56,9 +57,12 @@ public class RobotContainer {
     m_shooterSubsystem.setDefaultCommand(
       new RunCommand(() -> m_shooterSubsystem
         .setPercentAndUpdateSmartDashBoard(
-          m_driveJoystick.getRawButton(Constants.shooterManualRunShooterButton) ? 1.0 : 0
+          m_driveJoystick.getRawButton(Constants.driveBButton) ? 1.0 : 0
         ),
         m_shooterSubsystem) );
+
+    JoystickButton manualToggle = new JoystickButton(m_driveJoystick, Constants.driveAButton);
+    manualToggle.whenPressed( () -> m_shooterSubsystem.toggleShooterTrigger() );
     
   }
 
