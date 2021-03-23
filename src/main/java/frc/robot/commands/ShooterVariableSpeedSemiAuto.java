@@ -14,10 +14,15 @@ public class ShooterVariableSpeedSemiAuto extends SequentialCommandGroup {
     addCommands(
       new InstantCommand( () -> shooterInstance.setShooterTriggerPosition(Constants.shooterTriggerLoadPosition), shooterInstance), //Retract the trigger (in case of something outside of this command affecting the position of the piston)
 
-      new InstantCommand( () -> shooterInstance.setShooterPercentWheelSpeed(shooterSpeed), shooterInstance), //Run the shooter wheels
-
-      new WaitCommand(shooterInstance.getShooterMotorPercentSpeed() == 0 ? Constants.shooterTriggerSpeedUpTime : 0), //Wait # seconds for the wheels to speed up before shooting out if the shooter's motors are not already moving
-
+      new ConditionalCommand(
+        new SequentialCommandGroup( //Run the shooter if not already running
+          new InstantCommand( () -> shooterInstance.setShooterPercentWheelSpeed(shooterSpeed), shooterInstance), //Run the shooter wheels
+          new WaitCommand(Constants.shooterTriggerSpeedUpTime) //Wait # seconds for the wheels to speed up before shooting out if the shooter's motors are not already moving
+          ),
+        new WaitCommand(0), //Skip
+        () -> ( shooterInstance.getShooterMotorPercentSpeed() == 0 ? true : false ) //If the shooter is at 0% (-> true) run the shooter & wait for startup, else -> continue
+      ),
+      
       new InstantCommand( () -> shooterInstance.setShooterTriggerPosition(Constants.shooterTriggerShootOutwardPosition), shooterInstance), //Activate the trigger pushing the puck out
 
       new WaitCommand(Constants.shooterTriggerSettlingTime), //Wait # seconds for the pucks to settle
