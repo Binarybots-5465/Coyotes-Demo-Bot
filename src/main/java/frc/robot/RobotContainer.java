@@ -53,27 +53,25 @@ public class RobotContainer {
         new RunCommand(() -> m_driveSubsystem
             .setRaw(m_driveJoystick.getY(GenericHID.Hand.kLeft),
                     m_driveJoystick.getRawAxis( Constants.driveJoystickRotationAxisNum )), m_driveSubsystem));
-    
-    m_shooterSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_shooterSubsystem
-        .setPercentAndUpdateSmartDashBoard(
-          m_driveJoystick.getRawButton(Constants.driveBButton) ? 1.0 : 0
-        ),
-        m_shooterSubsystem) );
 
-    JoystickButton manualToggle = new JoystickButton(m_driveJoystick, Constants.driveAButton);
-    manualToggle.whenPressed( () -> m_shooterSubsystem.toggleShooterTrigger() );
+    JoystickButton manualToggleShooterWheelsButton = new JoystickButton(m_driveJoystick, Constants.driveBButton);
+    manualToggleShooterWheelsButton.whenPressed( () -> m_shooterSubsystem.toggleShooterPercentWheelSpeed(Constants.shooterMotorsMaxSpeed) ); //Manually toggles the shooter's wheels.
+
+    JoystickButton manualToggleTriggerButton = new JoystickButton(m_driveJoystick, Constants.driveAButton); 
+    manualToggleTriggerButton.whenPressed( () -> m_shooterSubsystem.toggleShooterTrigger() ); //Manually toggles the shooter's trigger.
     
+    JoystickButton runShooterFullSpeedDiscreteSemiAutoButton = new JoystickButton(m_driveJoystick, Constants.driveXButton);
+    runShooterFullSpeedDiscreteSemiAutoButton.whenPressed( new ShooterVariableSpeedSemiAuto(m_shooterSubsystem, Constants.shooterMotorsMaxSpeed), false ); //Runs the semi-auto shooter command at full speed & can't be interupted.
   }
 
   /**
-   * Automatically finds the needed joysticks and maps buttons.
+   * Automatically finds the needed joysticks
    */
   private void configureJoysticks() {
 
     DriverStation ds = DriverStation.getInstance();
 
-    //Automatically searches for the joysticks by name, if the names can not be found it notifies the user
+    //Automatically searches for the joysticks by name, if the names can not be found it notifies the user.
     ArrayList<String> foundJoysticksName = new ArrayList<String>();
     for(int port = 0; port <= 5; port++) {
       String jName = ds.getJoystickName(port);

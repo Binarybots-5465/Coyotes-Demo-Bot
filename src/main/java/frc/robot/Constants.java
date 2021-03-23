@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.PIDGains;
 
 /**
@@ -91,14 +92,20 @@ public final class Constants {
     //Motor ID's
     public final static int shooterLeftMotorTalonID = 6; //If we're using a Talon this will be the CAN ID for the left side.
     public final static int shooterRightMotorPWMID = 0; //The right side is using a VictorSP on PWM channel 0
-    
-    //Button ID
-    public final static int shooterManualRunShooterButton = 3; //This would be the Triangle button on the PS4 controller
 
     //PCM ID
     public final static int PCMCANID = 0;
 
-    //Shooter trigger mechanism
+    //Shooter trigger mechanism ID's
     public final static int shooterPCMTriggerFowardPortID = 4;
     public final static int shooterPCMTriggerReversePortID = 5;
+
+    //Other
+    public final static double shooterMotorsMaxSpeed = 1;
+    
+    public final static double shooterTriggerSettlingTime = 0.07; //# of seconds to wait until the trigger retracts and loads a puck, value derived from distance/time of falling vertically ~4 cm
+    public final static double shooterTriggerSpeedUpTime = .5; //# of seconds to wait until the shooter's wheels get up to speed
+
+    public final static DoubleSolenoid.Value shooterTriggerLoadPosition = DoubleSolenoid.Value.kForward;
+    public final static DoubleSolenoid.Value shooterTriggerShootOutwardPosition = DoubleSolenoid.Value.kReverse;
 }

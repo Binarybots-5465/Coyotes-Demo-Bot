@@ -132,7 +132,7 @@ public class Drive extends SubsystemBase {
         // True means the SRX's local output is PID0 - PID1, and the SRX on the other side is PID0 + PID1.
         rightForwardTalon.configAuxPIDPolarity(false, Constants.talonEncoderTimeout);
 
-        zeroEncoders(); //Start the motor's fresh off the bat.
+        zeroEncoders();
     
         diffDrive = new DifferentialDrive(leftForwardTalon, rightForwardTalon);
         diffDrive.setRightSideInverted(false); //WPI assumes that the left and right are opposite, this allows the motors to both move forward when applying positive output.
@@ -146,7 +146,7 @@ public class Drive extends SubsystemBase {
     public void setRaw(double forw, double rot) {
 
         diffDrive.arcadeDrive(forw, -1 * rot, true); //Arcade drive expects a clockwise value to determine the different power to give to each side of the robot
-                                                     // but our joystick gives us values in CCW so we negate the z rotation value (rot) to give us our expected rotation value
+                                                     // but our joystick gives us values in CCW so we negate the z rotation value (rot) to give us our expected rotation value.
     }
 
     /**
