@@ -4,15 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.util.ArrayList;
 
@@ -62,6 +60,10 @@ public class RobotContainer {
     
     JoystickButton runShooterFullSpeedDiscreteSemiAutoButton = new JoystickButton(m_driveJoystick, Constants.driveXButton);
     runShooterFullSpeedDiscreteSemiAutoButton.whenPressed( new ShooterVariableSpeedSemiAuto(m_shooterSubsystem, Constants.shooterMotorsMaxSpeed), false ); //Runs the semi-auto shooter command at full speed & can't be interupted.
+
+    Trigger shooterEStopTrigger = new JoystickButton(m_driveJoystick, Constants.driveLeftShoulder)
+                                    .or(new JoystickButton(m_driveJoystick, Constants.driveRightShoulder));
+    shooterEStopTrigger.whenActive( () -> m_shooterSubsystem.setShooterPercentWheelSpeed(0) ); //Immediately stops the shooter wheels when the drive controller's shoulder buttons are pressed.
   }
 
   /**

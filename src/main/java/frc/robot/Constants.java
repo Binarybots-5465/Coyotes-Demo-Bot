@@ -36,6 +36,9 @@ public final class Constants {
     public static int driveBButton = 3;
     public static int driveAButton = 2;
 
+    public static int driveLeftShoulder = 5;
+    public static int driveRightShoulder = 6;
+
     /* Drive Constants */
 
     //Talon SRX ID's
