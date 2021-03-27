@@ -4,14 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.util.ArrayList;
 
@@ -33,6 +32,7 @@ public class RobotContainer {
 
   //Subsystems
   private final Drive m_driveSubsystem = new Drive();
+  private final Shooter m_shooterSubsystem = new Shooter();
 
   //HID
   public Joystick m_driveJoystick = new Joystick(Constants.defaultDriveJoystickPort); //Defaults to ports set in Constants if configureJoysticks() can't find it later.
@@ -51,16 +51,29 @@ public class RobotContainer {
         new RunCommand(() -> m_driveSubsystem
             .setRaw(m_driveJoystick.getY(GenericHID.Hand.kLeft),
                     m_driveJoystick.getRawAxis( Constants.driveJoystickRotationAxisNum )), m_driveSubsystem));
+
+    JoystickButton manualToggleShooterWheelsButton = new JoystickButton(m_driveJoystick, Constants.driveBButton);
+    manualToggleShooterWheelsButton.whenPressed( () -> m_shooterSubsystem.toggleShooterPercentWheelSpeed(Constants.shooterMotorsMaxSpeed) ); //Manually toggles the shooter's wheels.
+
+    JoystickButton manualToggleTriggerButton = new JoystickButton(m_driveJoystick, Constants.driveAButton); 
+    manualToggleTriggerButton.whenPressed( () -> m_shooterSubsystem.toggleShooterTrigger() ); //Manually toggles the shooter's trigger.
+    
+    JoystickButton runShooterFullSpeedDiscreteSemiAutoButton = new JoystickButton(m_driveJoystick, Constants.driveXButton);
+    runShooterFullSpeedDiscreteSemiAutoButton.whenPressed( new ShooterVariableSpeedSemiAuto(m_shooterSubsystem, Constants.shooterMotorsMaxSpeed), false ); //Runs the semi-auto shooter command at full speed & can't be interupted.
+
+    Trigger shooterEStopTrigger = new JoystickButton(m_driveJoystick, Constants.driveLeftShoulder)
+                                    .or(new JoystickButton(m_driveJoystick, Constants.driveRightShoulder));
+    shooterEStopTrigger.whenActive( () -> m_shooterSubsystem.setShooterPercentWheelSpeed(0) ); //Immediately stops the shooter wheels when the drive controller's shoulder buttons are pressed.
   }
 
   /**
-   * Automatically finds the needed joysticks and maps buttons.
+   * Automatically finds the needed joysticks
    */
   private void configureJoysticks() {
 
     DriverStation ds = DriverStation.getInstance();
 
-    //Automatically searches for the joysticks by name, if the names can not be found it notifies the user
+    //Automatically searches for the joysticks by name, if the names can not be found it notifies the user.
     ArrayList<String> foundJoysticksName = new ArrayList<String>();
     for(int port = 0; port <= 5; port++) {
       String jName = ds.getJoystickName(port);

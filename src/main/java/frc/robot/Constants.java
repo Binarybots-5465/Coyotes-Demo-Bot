@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.PIDGains;
 
 /**
@@ -18,7 +19,7 @@ public final class Constants {
     /* HID Constants */
     
     //Set's the name for configureJoysticks() in RobotContainer.java to search for.
-    public static String driveJoystickName = "Wireless Controller";
+    public static String driveJoystickName = "Logitech Dual Action";
     public static String auxJoystickName = "Controller (HORIPAD S)";
 
     //Default Joystick ports
@@ -31,9 +32,12 @@ public final class Constants {
     public static double driveJoystickTurnCoefficient = 0.25;
 
     //Joystick Button Values
-    public static int auxAButton = 1; //Represents the A button on the Horipad Gamecube controller.
-    public static int auxXButton = 3; //Represents the X button on the Horipad Gamecube controller.
-    public static int auxBButton = 2; //Represents the B button on the Horipad Gamecube controller.
+    public static int driveXButton = 1; //Represents the X button on the drive controller.
+    public static int driveBButton = 3;
+    public static int driveAButton = 2;
+
+    public static int driveLeftShoulder = 5;
+    public static int driveRightShoulder = 6;
 
     /* Drive Constants */
 
@@ -85,4 +89,26 @@ public final class Constants {
 
     //Sets constant for the length of time the PID period runs.
     public final static int PIDClosedLoopTimeMs = 1; //1 ms per loop cycle.
+
+    /* Shooter Constants */
+
+    //Motor ID's
+    public final static int shooterLeftMotorTalonID = 6; //If we're using a Talon this will be the CAN ID for the left side.
+    public final static int shooterRightMotorPWMID = 0; //The right side is using a VictorSP on PWM channel 0
+
+    //PCM ID
+    public final static int PCMCANID = 0;
+
+    //Shooter trigger mechanism ID's
+    public final static int shooterPCMTriggerFowardPortID = 4;
+    public final static int shooterPCMTriggerReversePortID = 5;
+
+    //Other
+    public final static double shooterMotorsMaxSpeed = 1;
+    
+    public final static double shooterTriggerSettlingTime = 0.07; //# of seconds to wait until the trigger retracts and loads a puck, value derived from distance/time of falling vertically ~4 cm
+    public final static double shooterTriggerSpeedUpTime = .5; //# of seconds to wait until the shooter's wheels get up to speed
+
+    public final static DoubleSolenoid.Value shooterTriggerLoadPosition = DoubleSolenoid.Value.kForward;
+    public final static DoubleSolenoid.Value shooterTriggerShootOutwardPosition = DoubleSolenoid.Value.kReverse;
 }
